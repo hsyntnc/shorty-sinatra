@@ -6,7 +6,7 @@ RSpec.describe 'Shorty ' do
   end
 
   let(:valid_params) {{ url: 'https://impraise.com', shortcode: 'imprse' }}
-  let(:valid_without_params) {{ url: 'https://impraise.com' }}
+  let(:valid_without_shortcode_params) {{ url: 'https://impraise.com' }}
   let(:invalid_params) {{url: 'https://impraise.com' , shortcode: 'an_invalid_shortcode'}}
 
   describe 'Shortcode generation' do
@@ -20,7 +20,7 @@ RSpec.describe 'Shorty ' do
     end
 
     it 'creates a shortcode without a shortcode given' do
-      post '/shorten', valid_without_params.to_json
+      post '/shorten', valid_without_shortcode_params.to_json
       parsed_body = JSON.parse(last_response.body)
 
       expect(last_response.status).to eq(201)

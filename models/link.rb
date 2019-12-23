@@ -1,7 +1,7 @@
 class Link
   attr_accessor :shortcode, :url, :redirect_count, :created_at, :updated_at, :errors
 
-  def initialize(params)
+  def initialize(params = {})
     self.shortcode      = params['shortcode'] || params[:shortcode] || generate_shortcode
     self.url            = params['url'] || params[:url]
     self.redirect_count = params['redirect_count'] || 0
