@@ -1,8 +1,6 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'rack'
-require 'redis'
-require 'redis-namespace'
 
 require_relative 'config/redis'
 
