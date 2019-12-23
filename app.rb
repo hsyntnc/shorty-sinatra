@@ -4,7 +4,18 @@ require 'rack'
 
 
 class App < Sinatra::Base
-  get '/' do
-    "Hello World #{params[:name]}".strip
+  # Create a shortcode
+  post '/shorten' do
+
+  end
+
+  # Shortcode redirection
+  get '/:shortcode' do
+
+  end
+
+  # Shortcode stats
+  get '/:shortcode/stats' do
+
   end
 end
