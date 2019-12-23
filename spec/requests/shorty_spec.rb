@@ -11,7 +11,7 @@ RSpec.describe 'Shorty ' do
 
   describe 'Shortcode generation' do
     it 'creates a shortcode with a valid url and shortcode given' do
-      post '/shorten', valid_params
+      post '/shorten', valid_params.to_json
       parsed_body = JSON.parse(last_response.body)
 
       expect(last_response.status).to eq(201)
@@ -20,7 +20,7 @@ RSpec.describe 'Shorty ' do
     end
 
     it 'creates a shortcode without a shortcode given' do
-      post '/shorten', valid_without_params
+      post '/shorten', valid_without_params.to_json
       parsed_body = JSON.parse(last_response.body)
 
       expect(last_response.status).to eq(201)
@@ -34,18 +34,24 @@ RSpec.describe 'Shorty ' do
     end
 
     it 'returns an error if the shortcode given is not valid' do
-      post '/shorten', invalid_params
+      post '/shorten', invalid_params.to_json
       expect(last_response.status).to eq(422)
     end
 
     it 'returns an error if the shortcode is already in use' do
-      post '/shorten', valid_params
+      link = Link.new(valid_params)
+      link.save
+
+      post '/shorten', valid_params.to_json
       expect(last_response.status).to eq(409)
     end
   end
 
   describe 'Shortcode endpoint' do
     it 'returns 302 if shortcode was found' do
+      link = Link.new(valid_params)
+      link.save
+
       get "/#{valid_params[:shortcode]}"
       expect(last_response.status).to eq(302)
       expect(last_response.headers['Location']).to eq(valid_params[:url])
@@ -59,13 +65,15 @@ RSpec.describe 'Shorty ' do
 
   describe 'Shortcode stats' do
     it 'returns shortcode stats with an existing code' do
-      get "/#{valid_params[:shortcode]}"
-      expect(last_response.status).to eq(302)
+      link = Link.new(valid_params)
+      link.save
+
+      get "/#{valid_params[:shortcode]}/stats"
+      expect(last_response.status).to eq(200)
 
       parsed_body = JSON.parse(last_response.body)
 
       expect(parsed_body.keys).to eq(%w(startDate lastSeenDate redirectCount))
-      expect(parsed_body['shortcode'].match("^[0-9a-zA-Z_]{6}$")).not_to eq nil
     end
 
     it 'returns 404 if shortcode was not found' do
