@@ -1,7 +1,10 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'rack'
+require 'redis'
+require 'redis-namespace'
 
+require_relative 'config/redis'
 
 class App < Sinatra::Base
   # Create a shortcode
