@@ -29,9 +29,9 @@ class App < Sinatra::Base
   get '/:shortcode' do
     content_type :json
 
-    @link = set_link
-    @link.increase_counter
-    headers 'Location' => @link.url
+    link = set_link
+    link.increase_counter
+    headers 'Location' => link.url
     status 302
     {}.to_json
   end
@@ -40,15 +40,15 @@ class App < Sinatra::Base
   get '/:shortcode/stats' do
     content_type :json
 
-    @link = set_link
+    link = set_link
     status 200
-    @link.to_json
+    link.to_json
   end
 
   def set_link
-    @link = Link.find(params[:shortcode])
-    halt 404, error('Shortcode not found.').to_json if @link.nil?
-    @link
+    link = Link.find(params[:shortcode])
+    halt 404, error('Shortcode not found.').to_json if link.nil?
+    link
   end
 
   def error(message)
