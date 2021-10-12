@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sinatra', '2.0.7'
-gem 'puma', '4.3.1'
+gem 'puma', '4.3.9'
 gem 'redis'
 
 group :test do
